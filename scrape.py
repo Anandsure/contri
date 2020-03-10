@@ -4,7 +4,7 @@ from google_images_download import google_images_download
 # creating object 
 response = google_images_download.googleimagesdownload() 
 
-search_queries =['apple','science','cars']
+search_queries =['Polar','Sleep','Network']
 
 
 def downloadimages(query): 
@@ -18,8 +18,8 @@ def downloadimages(query):
 	# of images to download. ("tall, square, wide, panoramic") 
 	arguments = {"keywords": query, 
 				#"format": "jpg", 
-				"limit":100}
-				#"print_urls":True,
+				"limit":100,
+				"print_urls":True}
 				#"size": "large"}
 				#"aspect_ratio": "panoramic" } 
 	try: 
