@@ -89,7 +89,7 @@ def persist_image(folder_path:str,url:str):
 if __name__ == '__main__':
     wd = webdriver.Chrome(executable_path=DRIVER_PATH)
     #query = input()
-    query = 'bio-pesticides'
+    query = 'DIJIKSTRA'
     wd.get('https://google.com')
     search_box = wd.find_element_by_css_selector('input.gLFyf')
     search_box.send_keys(query)
