@@ -69,7 +69,7 @@ def fetch_image_urls(query:str, max_links_to_fetch:int, wd:webdriver, sleep_betw
 
     return image_urls
 
-def persist_image(folder_path:str,url:str):
+def persist_image(folder_path:str,file_name:str,url:str):
     try:
         image_content = requests.get(url).content
 
@@ -79,7 +79,12 @@ def persist_image(folder_path:str,url:str):
     try:
         image_file = io.BytesIO(image_content)
         image = Image.open(image_file).convert('RGB')
-        file_path = os.path.join(folder_path,hashlib.sha1(image_content).hexdigest()[:10] + '.jpg')
+        folder_path = os.path.join(folder_path,file_name)
+        if os.path.exists(folder_path):
+            file_path = os.path.join(folder_path,hashlib.sha1(image_content).hexdigest()[:10] + '.jpg')
+        else:
+            os.mkdir(folder_path)
+            file_path = os.path.join(folder_path,hashlib.sha1(image_content).hexdigest()[:10] + '.jpg')
         with open(file_path, 'wb') as f:
             image.save(f, "JPEG", quality=85)
         print(f"SUCCESS - saved {url} - as {file_path}")
@@ -89,12 +94,13 @@ def persist_image(folder_path:str,url:str):
 if __name__ == '__main__':
     wd = webdriver.Chrome(executable_path=DRIVER_PATH)
     #query = input()
-    query = 'DIJIKSTRA'
-    wd.get('https://google.com')
-    search_box = wd.find_element_by_css_selector('input.gLFyf')
-    search_box.send_keys(query)
-    links = fetch_image_urls(query,2,wd)
-    path = '/Users/anand/Desktop/contri/images'
-    for i in links:
-        persist_image(path,i)
+    queries = ["CMOS"]
+    for query in queries:
+        wd.get('https://google.com')
+        search_box = wd.find_element_by_css_selector('input.gLFyf')
+        search_box.send_keys(query)
+        links = fetch_image_urls(query,2,wd)
+        images_path = '/Users/anand/Desktop/contri/images'
+        for i in links:
+            persist_image(images_path,query,i)
     wd.quit()
